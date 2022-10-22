@@ -1,4 +1,2 @@
 # .htaccess
-RewriteEngine On
-RewriteRule files/login.php$ login.php [R]
-
+# RewriteEngine On
