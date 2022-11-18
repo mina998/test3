@@ -1,0 +1,26 @@
+# This is a basic workflow to help you get started with Actions
+
+name: DeleteComments
+on:
+  push:
+    branches: [ "lsdev" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Clean up Repository
+        run: |
+          branch=lsws; path=$(pwd); cd ..
+          git config --global user.email "iosss@qq.com"
+          git config --global user.name "mina998"
+          git clone -b $branch https://mina998:${{ secrets.GITHUB_TOKEN }}@github.com/mina998/wtools.git $branch
+          cd $branch && cp -rf $path/* ./
+          sed -i -r '/^(#\s|\s+#)/d' ols.sh
+          sed -i "/^repo_raw/s/lsdev/$branch/" ols.sh
+          git checkout --orphan latest_branch
+          git add -A
+          git commit -am "update"
+          git branch -D $branch
+          git branch -m $branch
+          git push -f origin $branch
