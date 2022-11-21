@@ -39,8 +39,12 @@ if [ -z "$site_list" ]; then
     exit 0
 fi
 # 检测git是否安装
-if [ ! -a /bin/git ]; then
+if [ ! -e /usr/bin/git ]; then
     apt install git -y
+fi
+# 检测zip是否安装
+if [ ! -e /usr/bin/7z ]; then
+    apt install p7zip-full -y
 fi
 # 配置git用户
 git config --global user.email "$user@qq.com"
@@ -85,7 +89,8 @@ function site_backup {
     mysqldump -u$db_user -p$db_pass $db_name > $web_doc_root/$db_back
     #分卷打包压缩
     tr -dc 'a-z' < /dev/urandom | head -c 100 > $web_doc_root/test.version
-    zip -q -s 45m -r web.zip $web_doc_root
+    # zip -9qs 45m -r web.zip $web_doc_root
+    7z a web.7z $web_doc_root -v46m -bd
 }
 # 上传函数
 function pash_tag {
