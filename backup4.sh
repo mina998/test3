@@ -1,10 +1,9 @@
 #!/bin/bash
 #################################
 ##   站点备份 GITHUB版
-##   下载TAG打包文件 			
+##   下载TAG打包文件
 ##   使用Bandizip软件 解压
-##   重新打包为.tgz格式
-##   重命名为.tar.gz格式
+##   重新打包为.tar.gz格式
 #################################
 # 开启失败日志记录 *
 logv=0
@@ -90,7 +89,9 @@ function site_backup {
     #分卷打包压缩
     tr -dc 'a-z' < /dev/urandom | head -c 100 > $web_doc_root/test.version
     # zip -9qs 45m -r web.zip $web_doc_root
-    7z a web.7z $web_doc_root -v46m -bd
+    7z a web.7z $web_doc_root -v46m #-bd
+    #删除
+    rm -f $web_doc_root/$db_back
 }
 # 上传函数
 function pash_tag {
