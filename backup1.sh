@@ -5,7 +5,7 @@
 #网站根路径 后缀不加/
 web_root=/www/v2.hq4.net
 #网站运行目录
-run_path=wordpress
+doc_folder=public_html
 #备份文件保存路径 后缀不加/
 backup=~/backup
 #网站权限用户
@@ -71,11 +71,11 @@ backup(){
         mkdir -p $backup
     fi
     # 判断网站是否存在
-    if [ ! -d $web_root/$run_path ] ; then
+    if [ ! -d $web_root/$doc_folder ] ; then
         echoR "站点文件不存在"
     fi
     # 切换工作目录
-    cd $web_root/$run_path
+    cd $web_root/$doc_folder
     # 导出MySQL数据库
     mysqldump -u$db_user -p$db_pass $db_name > $db_back
     # 测数据库是否导出成功
@@ -83,11 +83,11 @@ backup(){
     # 切换目录
     cd $backup
     # 打包本地网站数据,这里用--exclude排除文件及无用的目录
-    tar -C $web_root/$run_path -zcf $web_save_name ./
+    tar -C $web_root/$doc_folder -zcf $web_save_name ./
     # 测数网站是否备份成功
     ! test -e $web_save_name && _error '网站备份失败'
     # 删除
-    rm $web_root/$run_path/$db_back
+    rm $web_root/$doc_folder/$db_back
     # 查看备份
     echo -e "\033[32m"
     ls -lrthgG
@@ -129,23 +129,23 @@ huifu(){
     # 删除SQL
     rm $db_back
     # 删除网站文件
-    rm -rf $web_root/$run_path/*
+    rm -rf $web_root/$doc_folder/*
     # 还原备份文件
-    mv ./* $web_root/$run_path/
+    mv ./* $web_root/$doc_folder/
     # 删除临时目录
     cd .. && rm -rf temp
     # 还原指定伪静态文件
     if [ -a .htaccess ] ; then
-        cp .htaccess $web_root/$run_path/
+        cp .htaccess $web_root/$doc_folder/
     fi
     # 切换工作目录
     cd $web_root
     # 修改所有者
-    chown -R $user:$group $run_path/
+    chown -R $user:$group $doc_folder/
     # 修改目录权限
-    find $run_path/ -type d -exec chmod 750 {} \;
+    find $doc_folder/ -type d -exec chmod 750 {} \;
     # 修改文件权限
-    find $run_path/ -type f -exec chmod 640 {} \;
+    find $doc_folder/ -type f -exec chmod 640 {} \;
 }
 #删除备份文件
 delete_backup_file(){
