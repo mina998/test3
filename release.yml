@@ -22,8 +22,8 @@ jobs:
           [ ! -x /usr/bin/7z ] && apt update -y && apt install p7zip-full -y
           !test -f web.7z.001 && exit 0 
           7z x web.7z.001 -r -aoa -bd
-          tar zcf web.tar.gz ./public_html/{.[!.],}*
-          ls -alh 
+          tar zcf web.tar.gz -C ./public_html ./
+          ls -alh
       - name: Create Release from TAG
         run: |
           web="$(cat site)"
