@@ -1,0 +1,36 @@
+name: Upload Assets
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      BRANCH: main
+      RELEASE_API: /repos/${{ github.repository }}/releases
+      MIME_TYPE: application/vnd.github+json
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Set TAG Sersion
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+        with:
+          ref: "${{ env.VERSION }}"
+      - name: Package Files
+        run: |
+          [ ! -x /usr/bin/7z ] && apt update -y && apt install p7zip-full -y
+          !test -f web.7z.001 && exit 0 
+          7z x web.7z.001 -r -aoa -bd
+          tar zcf web.tar.gz ./public_html/{.[!.],}*
+          ls -alh 
+      - name: Create Release from TAG
+        run: |
+          web="$(cat site)"
+          gh api --method POST -H "Accept: ${{ env.MIME_TYPE }}" ${{ env.RELEASE_API }} \
+            -f tag_name='${{ env.VERSION }}' -f name='${{ env.VERSION }}' \
+            -f target_commitish='${{ env.BRANCH }}' -f body="$web" \
+            -F draft=false -F prerelease=false -F generate_release_notes=false
+      - name: Upload Release Asset
+        run: gh release upload ${{ env.VERSION }} web.tar.gz
