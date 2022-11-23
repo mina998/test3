@@ -3,7 +3,6 @@ on:
   push:
     tags:
       - v*
-
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -34,3 +33,5 @@ jobs:
             -F draft=false -F prerelease=false -F generate_release_notes=false
       - name: Upload Release Asset
         run: gh release upload ${{ env.VERSION }} web.tar.gz
+
+##END
