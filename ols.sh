@@ -446,9 +446,9 @@ function install_wp {
     #安装WordPress程序
     wp core install --url="https://$input_domain" --title="My Blog" --admin_user=$wp_user --admin_password=$wp_pass --admin_email=$wp_mail --skip-email --allow-root
     #安装缓存插件
-    wp plugin install litespeed-cache --allow-root --activate --quiet
+    # wp plugin install litespeed-cache --allow-root --activate --quiet
     #安装Astra主题
-    wp theme install astra --allow-root --activate --quiet
+    # wp theme install astra --allow-root --activate --quiet
 }
 # 从配置文件获取主机名
 function hostname_from_httpd {
