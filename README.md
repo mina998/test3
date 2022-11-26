@@ -7,8 +7,3 @@
 wget -N https://raw.githubusercontent.com/mina998/wtools/lsws/ols.sh
 bash ols.sh
 ```
-### 从GTIHUB上还原
-```Shell
-wget -N https://raw.githubusercontent.com/mina998/wtools/lsws/restore.git2.sh
-bash restore.git2.sh SiteMainDomain.com
-```
