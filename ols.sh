@@ -702,7 +702,7 @@ function restore_site {
     #删除网站文件
     rm -rf $web_doc_root/{.[!.],}*
     #还原备份文件
-    mv ./{.[!.],}* $web_doc_root/
+    mv ./{.[!.],}* $web_doc_root/ > /dev/null 2>&1
     #修改网站数据库配置文件
     replace_web_config
     #删除临时目录
