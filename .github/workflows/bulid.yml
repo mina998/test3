@@ -14,9 +14,10 @@ jobs:
           branch=lsws; path=$(pwd); cd ..
           git config --global user.email "iosss@qq.com"
           git config --global user.name "mina998"
-          git clone -b $branch https://mina998:${{ secrets.GITHUB_TOKEN }}@github.com/mina998/wtools.git $branch
-          cd $branch && cp -rf $path/* ./
+          git clone -b $branch https://mina998:${{ secrets.GITHUB_TOKEN }}@github.com/mina998/wtools.git ../$branch
+          cd ../$branch && cp -r $path/* ./
           sed -i -r '/^(#\s|\s+#)/d' ols.sh
+          rm -rf src/
           sed -i "/^repo_raw/s/lsdev/$branch/" ols.sh
           git checkout --orphan latest_branch
           git add -A
